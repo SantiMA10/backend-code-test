@@ -20,5 +20,6 @@ app.use(lusca.xssProtection(true));
 // Primary app routes
 app.get("/", healthController.check);
 app.post("/genially", geniallyController.create);
+app.delete("/genially/:geniallyId", geniallyController.remove);
 
 export default app;
