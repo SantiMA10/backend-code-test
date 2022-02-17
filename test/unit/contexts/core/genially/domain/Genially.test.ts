@@ -33,4 +33,30 @@ describe("Genially", () => {
       );
     });
   });
+
+  describe("#delete", () => {
+    it("sets the current date in the 'deletedAt'", async () => {
+      const subject = new Genially("id", "name", "description");
+
+      subject.delete();
+
+      expect(subject.deletedAt).toBeInstanceOf(Date);
+    });
+  });
+
+  describe("#isDeleted", () => {
+    it("returns false if there is no 'deletedAt' date", async () => {
+      const subject = new Genially("id", "name", "description");
+
+      expect(subject.isDeleted()).toBe(false);
+    });
+
+    it("returns true if there is a 'deletedAt' date", async () => {
+      const subject = new Genially("id", "name", "description");
+
+      subject.delete();
+
+      expect(subject.isDeleted()).toBe(true);
+    });
+  });
 });
