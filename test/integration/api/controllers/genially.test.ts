@@ -47,4 +47,21 @@ describe("/genially", () => {
       expect(response.status).toEqual(500);
     });
   });
+
+  describe("DELETE /genially/:geniallyId", () => {
+    it("returns 204 no content status code if the genially is deleted", async () => {
+      const subject = request(app);
+      await subject.post("/genially").send({ name: "name", id: "id" });
+
+      const response = await subject.delete("/genially/id");
+
+      expect(response.status).toEqual(204);
+    });
+
+    it("returns a 404 not found status code if the genially does not exist", async () => {
+      const response = await request(app).delete("/genially/id");
+
+      expect(response.status).toEqual(404);
+    });
+  });
 });
