@@ -25,4 +25,19 @@ describe("InMemoryGeniallyRepository", () => {
       });
     });
   });
+
+  describe("#delete", () => {
+    it("deletes the genially", async () => {
+      const subject = new InMemoryGeniallyRepository();
+      const genially = new Genially("id", "name", "description");
+      await subject.save(genially);
+
+      await subject.delete(genially.id);
+
+      expect(
+        await subject.find(genially.id, { includeSoftDeletes: true })
+      ).not.toBeUndefined();
+      expect(await subject.find(genially.id)).toBeUndefined();
+    });
+  });
 });

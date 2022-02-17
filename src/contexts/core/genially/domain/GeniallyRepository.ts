@@ -3,7 +3,10 @@ import Genially from "./Genially";
 interface GeniallyRepository {
   save(genially: Genially): Promise<void>;
 
-  find(id: string): Promise<Genially>;
+  find(
+    id: string,
+    options?: { includeSoftDeletes: boolean }
+  ): Promise<Genially>;
 
   delete(id: string): Promise<void>;
 }
