@@ -2,6 +2,8 @@ import compression from "compression";
 import express from "express";
 import lusca from "lusca";
 
+import InMemoryGeniallyRepository from "../contexts/core/genially/infrastructure/InMemoryGeniallyRepository";
+
 // Controllers (route handlers)
 import * as healthController from "./controllers/health";
 import * as geniallyController from "./controllers/genially";
@@ -21,5 +23,7 @@ app.use(lusca.xssProtection(true));
 app.get("/", healthController.check);
 app.post("/genially", geniallyController.create);
 app.delete("/genially/:geniallyId", geniallyController.remove);
+app.put("/genially/:geniallyId/rename", geniallyController.rename);
 
 export default app;
+export const repository = new InMemoryGeniallyRepository();

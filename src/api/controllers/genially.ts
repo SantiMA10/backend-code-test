@@ -1,13 +1,11 @@
-import { Response, Request } from "express";
+import { Request, Response } from "express";
 import { GeniallyPresenter } from "../../contexts/core/genially/adapters/GeniallyPresenter";
 import CreateGeniallyService from "../../contexts/core/genially/application/CreateGeniallyService";
 import DeleteGeniallyService from "../../contexts/core/genially/application/DeleteGeniallyService";
+import RenameGeniallyService from "../../contexts/core/genially/application/RenameGeniallyService";
 import GeniallyNotCreate from "../../contexts/core/genially/domain/GeniallyNotCreate";
 import GeniallyNotExist from "../../contexts/core/genially/domain/GeniallyNotExist";
-import InMemoryGeniallyRepository from "../../contexts/core/genially/infrastructure/InMemoryGeniallyRepository";
-
-// In memory repository
-export const repository = new InMemoryGeniallyRepository();
+import { repository } from "../app";
 
 export const create = async (req: Request, res: Response) => {
   const service = new CreateGeniallyService(repository);
@@ -15,7 +13,7 @@ export const create = async (req: Request, res: Response) => {
   try {
     const genially = await service.execute(req.body);
 
-    res.status(201).send(new GeniallyPresenter(genially).toJSON());
+    res.status(201).send({ data: new GeniallyPresenter(genially).toJSON() });
   } catch (e) {
     if (e instanceof GeniallyNotCreate) {
       return res.status(400).send({
@@ -34,6 +32,27 @@ export const remove = async (req: Request, res: Response) => {
     await service.execute(req.params.geniallyId);
 
     return res.status(204).send();
+  } catch (e) {
+    if (e instanceof GeniallyNotExist) {
+      return res.status(404).send({
+        message: e.message,
+      });
+    }
+  }
+};
+
+export const rename = async (req: Request, res: Response) => {
+  const service = new RenameGeniallyService(repository);
+
+  try {
+    const genially = await service.execute({
+      id: req.params.geniallyId,
+      name: req.body.name,
+    });
+
+    return res
+      .status(200)
+      .send({ data: new GeniallyPresenter(genially).toJSON() });
   } catch (e) {
     if (e instanceof GeniallyNotExist) {
       return res.status(404).send({
