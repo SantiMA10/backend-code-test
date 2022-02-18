@@ -14,7 +14,7 @@ describe("DeleteGenially", () => {
   });
 
   it("throws a 'GeniallyNotExist' error if the genially does not exist in the db", async () => {
-    when(mockedRepository.find("id")).thenReturn(undefined);
+    when(mockedRepository.find("id")).thenReturn(Promise.resolve(undefined));
 
     await expect(subject.execute("id")).rejects.toThrow(GeniallyNotExist);
   });
