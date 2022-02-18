@@ -1,4 +1,5 @@
 import GeniallyNotCreate from "./GeniallyNotCreate";
+import GeniallyNotUpdate from "./GeniallyNotUpdate";
 
 export default class Genially {
   private _id: string;
@@ -39,6 +40,23 @@ export default class Genially {
 
   get name(): string {
     return this._name;
+  }
+
+  set name(name: string) {
+    if (name.length < 3) {
+      throw new GeniallyNotUpdate(
+        `Genially cannot be updated with name: ${name} (less than 3 characters)`
+      );
+    }
+
+    if (name.length > 125) {
+      throw new GeniallyNotUpdate(
+        `Genially cannot be updated with name: ${name} (more than 125 characters)`
+      );
+    }
+
+    this._name = name;
+    this._modifiedAt = new Date();
   }
 
   get description(): string | undefined {
