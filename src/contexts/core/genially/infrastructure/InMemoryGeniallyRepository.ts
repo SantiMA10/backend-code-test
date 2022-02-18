@@ -32,4 +32,8 @@ export default class InMemoryGeniallyRepository implements Repository {
 
     genially?.delete();
   };
+
+  public clear() {
+    this.geniallys = [];
+  }
 }

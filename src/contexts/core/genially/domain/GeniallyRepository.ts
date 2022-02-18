@@ -6,7 +6,7 @@ interface GeniallyRepository {
   find(
     id: string,
     options?: { includeSoftDeletes: boolean }
-  ): Promise<Genially>;
+  ): Promise<Genially | undefined>;
 
   delete(id: string): Promise<void>;
 }

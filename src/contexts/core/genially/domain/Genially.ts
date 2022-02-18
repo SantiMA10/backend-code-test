@@ -1,12 +1,13 @@
 import GeniallyNotCreate from "./GeniallyNotCreate";
+import GeniallyNotUpdate from "./GeniallyNotUpdate";
 
 export default class Genially {
   private _id: string;
   private _name: string;
-  private _description: string;
+  private _description?: string;
   private _createdAt: Date;
-  private _modifiedAt: Date;
-  private _deletedAt: Date;
+  private _modifiedAt?: Date;
+  private _deletedAt?: Date;
 
   constructor(id: string, name: string, description?: string) {
     if (name.length < 3) {
@@ -21,7 +22,7 @@ export default class Genially {
       );
     }
 
-    if (description?.length > 125) {
+    if (description && description?.length > 125) {
       throw new GeniallyNotCreate(
         `Genially cannot be created with description: ${description} (more than 125 characters)`
       );
@@ -41,7 +42,24 @@ export default class Genially {
     return this._name;
   }
 
-  get description(): string {
+  set name(name: string) {
+    if (name.length < 3) {
+      throw new GeniallyNotUpdate(
+        `Genially cannot be updated with name: ${name} (less than 3 characters)`
+      );
+    }
+
+    if (name.length > 125) {
+      throw new GeniallyNotUpdate(
+        `Genially cannot be updated with name: ${name} (more than 125 characters)`
+      );
+    }
+
+    this._name = name;
+    this._modifiedAt = new Date();
+  }
+
+  get description(): string | undefined {
     return this._description;
   }
 
@@ -49,11 +67,11 @@ export default class Genially {
     return this._createdAt;
   }
 
-  get modifiedAt(): Date {
+  get modifiedAt(): Date | undefined {
     return this._modifiedAt;
   }
 
-  get deletedAt(): Date {
+  get deletedAt(): Date | undefined {
     return this._deletedAt;
   }
 

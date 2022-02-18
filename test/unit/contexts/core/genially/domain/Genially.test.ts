@@ -1,5 +1,6 @@
 import Genially from "../../../../../../src/contexts/core/genially/domain/Genially";
 import GeniallyNotCreate from "../../../../../../src/contexts/core/genially/domain/GeniallyNotCreate";
+import GeniallyNotUpdate from "../../../../../../src/contexts/core/genially/domain/GeniallyNotUpdate";
 
 describe("Genially", () => {
   describe("#constructor", () => {
@@ -57,6 +58,43 @@ describe("Genially", () => {
       subject.delete();
 
       expect(subject.isDeleted()).toBe(true);
+    });
+  });
+
+  describe("rename", () => {
+    it("throws an error if the name has less than 3 characters", async () => {
+      const subject = new Genially("id", "name", "description");
+      const shortName = new Array(2).fill("a").join("");
+
+      expect(() => {
+        subject.name = shortName;
+      }).toThrow(
+        new GeniallyNotUpdate(
+          `Genially cannot be updated with name: ${shortName} (less than 3 characters)`
+        )
+      );
+    });
+
+    it("throws an error if the name has more than 125 characters", async () => {
+      const subject = new Genially("id", "name", "description");
+      const longName = new Array(126).fill("a").join("");
+
+      expect(() => {
+        subject.name = longName;
+      }).toThrow(
+        new GeniallyNotUpdate(
+          `Genially cannot be updated with name: ${longName} (more than 125 characters)`
+        )
+      );
+    });
+
+    it("updates the name and the modifiedAt date", async () => {
+      const subject = new Genially("id", "name", "description");
+
+      subject.name = "new name";
+
+      expect(subject.name).toBe("new name");
+      expect(subject.modifiedAt).toBeInstanceOf(Date);
     });
   });
 });
