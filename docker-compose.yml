@@ -10,7 +10,5 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
-      MONGO_INITDB_DB: integration-tests
-      MONGO_INITDB_COLLECTION: test
       MONGO_REPLICA_HOST: localhost
       MONGO_REPLICA_PORT: 27018
