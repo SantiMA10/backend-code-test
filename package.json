@@ -12,11 +12,19 @@
     "serve": "node dist/server.js",
     "start": "npm run serve",
     "test": "jest --forceExit --coverage --verbose",
+    "test:integration": "npm run test test/integration",
+    "test:unit": "npm run test test/integration",
     "watch-node": "nodemon dist/server.js",
     "watch-test": "npm run test -- --watchAll",
-    "watch-ts": "tsc -w"
+    "watch-ts": "tsc -w",
+    "docker:up": "docker-compose up -d --force-recreate ",
+    "docker:down": "docker-compose down",
+    "docker:test": "npm run docker:up && npm run test && npm run docker:down",
+    "docker:test:integration": "npm run docker:up && npm run test test/integration && npm run docker:down",
+    "docker:test:watch": "./bin/watch-docker"
   },
   "dependencies": {
+    "@prisma/client": "^3.9.2",
     "compression": "^1.7.4",
     "express": "^4.17.1",
     "lusca": "^1.6.1"
@@ -37,6 +45,7 @@
     "eslint": "^6.8.0",
     "jest": "^26.0.0",
     "nodemon": "^2.0.3",
+    "prisma": "^3.9.2",
     "supertest": "^4.0.2",
     "ts-jest": "^25.4.0",
     "ts-mockito": "^2.6.1",

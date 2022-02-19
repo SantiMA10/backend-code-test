@@ -9,7 +9,14 @@ export default class Genially {
   private _modifiedAt?: Date;
   private _deletedAt?: Date;
 
-  constructor(id: string, name: string, description?: string) {
+  constructor(
+    id: string,
+    name: string,
+    description?: string,
+    createdAt?: Date,
+    modifiedAt?: Date,
+    deletedAt?: Date
+  ) {
     if (name.length < 3) {
       throw new GeniallyNotCreate(
         `Genially cannot be created with name: ${name} (less than 3 characters)`
@@ -31,7 +38,9 @@ export default class Genially {
     this._id = id;
     this._name = name;
     this._description = description;
-    this._createdAt = new Date();
+    this._createdAt = createdAt || new Date();
+    this._modifiedAt = modifiedAt;
+    this._deletedAt = deletedAt;
   }
 
   get id(): string {

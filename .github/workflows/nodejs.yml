@@ -20,7 +20,7 @@ jobs:
       - run: npm ci
       - run: "npm run ci:lint"
 
-  test:
+  test_unit:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,7 +31,33 @@ jobs:
           node-version: 14.x
           cache: "npm"
       - run: npm ci
-      - run: "npm run test"
+      - run: "npm run test:unit"
+
+  test_integration:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        build: ./mongo
+        ports:
+          - 27018:27018
+        environment:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: example
+          MONGO_INITDB_DB: integration-tests
+          MONGO_INITDB_COLLECTION: test
+          MONGO_REPLICA_HOST: localhost
+          MONGO_REPLICA_PORT: 27018
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+          cache: "npm"
+      - run: npm ci
+      - run: "npm run test:integration"
 
   build:
     runs-on: ubuntu-latest
