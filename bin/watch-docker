@@ -1,0 +1,4 @@
+
+#!/usr/bin/env sh
+
+npm run docker:up && npm run watch-test $1 && npm run docker:down

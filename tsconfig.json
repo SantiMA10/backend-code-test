@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "skipLibCheck": true,
     "module": "commonjs",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -9,10 +10,8 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "paths": {
-      "*": ["node_modules/*"]
-    },
     "strict": true
   },
-  "include": ["src/**/*", "test"]
+  "include": ["src/**/*", "test"],
+  "exclude": ["node_modules"]
 }
