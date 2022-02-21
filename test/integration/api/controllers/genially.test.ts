@@ -105,5 +105,21 @@ withMongo(() => {
         expect(response.status).toEqual(404);
       });
     });
+
+    describe("GET /genially/count", () => {
+      it("returns 0 if there is no genially", async () => {
+        const response = await request(app).get("/genially/count").expect(200);
+
+        expect(response.body).toMatchObject({ data: { count: 0 } });
+      });
+
+      it("returns 1 if there is one genially", async () => {
+        const subject = request(app);
+        await subject.post("/genially").send({ name: "name", id: "id" });
+        const response = await subject.get("/genially/count").expect(200);
+
+        expect(response.body).toMatchObject({ data: { count: 1 } });
+      });
+    });
   });
 });
