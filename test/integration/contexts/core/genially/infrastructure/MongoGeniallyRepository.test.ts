@@ -64,5 +64,29 @@ withMongo(() => {
         expect(await subject.find(genially.id)).toBeUndefined();
       });
     });
+
+    describe("#count", () => {
+      it("returns 0 if there is no genially", async () => {
+        const subject = new MongoGeniallyRepository();
+
+        expect(await subject.count()).toBe(0);
+      });
+
+      it("returns 1 if there is one genially", async () => {
+        const subject = new MongoGeniallyRepository();
+        await subject.save(new Genially("id", "name", "description"));
+
+        expect(await subject.count()).toBe(1);
+      });
+
+      it("returns 1 if there is one deleted genially", async () => {
+        const subject = new MongoGeniallyRepository();
+        const genially = new Genially("id", "name", "description");
+        await subject.save(genially);
+        await subject.delete(genially.id);
+
+        expect(await subject.count()).toBe(1);
+      });
+    });
   });
 });

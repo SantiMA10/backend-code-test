@@ -1,11 +1,14 @@
 import { Request, Response } from "express";
 import { GeniallyPresenter } from "../../contexts/core/genially/adapters/GeniallyPresenter";
+import CountGeniallyService from "../../contexts/core/genially/application/CountGeniallyService";
 import CreateGeniallyService from "../../contexts/core/genially/application/CreateGeniallyService";
 import DeleteGeniallyService from "../../contexts/core/genially/application/DeleteGeniallyService";
 import RenameGeniallyService from "../../contexts/core/genially/application/RenameGeniallyService";
 import GeniallyNotCreate from "../../contexts/core/genially/domain/GeniallyNotCreate";
 import GeniallyNotExist from "../../contexts/core/genially/domain/GeniallyNotExist";
-import { repository } from "../app";
+import { MongoGeniallyRepository } from "../../contexts/core/genially/infrastructure/MongoGeniallyRepository";
+
+const repository = new MongoGeniallyRepository();
 
 export const create = async (req: Request, res: Response) => {
   const service = new CreateGeniallyService(repository);
@@ -60,4 +63,10 @@ export const rename = async (req: Request, res: Response) => {
       });
     }
   }
+};
+
+export const count = async (_: Request, res: Response) => {
+  const service = new CountGeniallyService(repository);
+
+  return res.status(200).send({ data: { count: await service.execute() } });
 };

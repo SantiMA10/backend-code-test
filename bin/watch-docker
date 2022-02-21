@@ -1,4 +1,4 @@
 
 #!/usr/bin/env sh
 
-npm run docker:up && npm run watch-test $1 && npm run docker:down
+npm run docker:up && npm run test -- $1 --runInBand --watch && npm run docker:down
