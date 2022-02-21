@@ -9,6 +9,8 @@ interface GeniallyRepository {
   ): Promise<Genially | undefined>;
 
   delete(id: string): Promise<void>;
+
+  count(): Promise<number>;
 }
 
 export default GeniallyRepository;

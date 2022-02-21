@@ -69,4 +69,8 @@ export class MongoGeniallyRepository implements GeniallyRepository {
     genially.delete();
     await this.save(genially);
   };
+
+  public count: Repository["count"] = async () => {
+    return this.prisma.count();
+  };
 }
